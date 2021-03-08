@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.sharding.mapper.OrderDetailMapper">
+
+    <resultMap type="com.test.sharding.entity.OrderDetail" id="OrderDetailMap">
+        <result property="id" column="id"/>
+        <result property="merchantId" column="merchant_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsQuantity" column="goods_quantity"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+            `id`,
+            `merchant_id`,
+            `order_no`,
+            `goods_name`,
+            `goods_quantity`,
+            `create_time`,
+        </trim>
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO `order_detail`
+        (
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                `id`,
+            </if>
+            <if test="merchantId!=null">
+                `merchant_id`,
+            </if>
+            <if test="orderNo!=null">
+                `order_no`,
+            </if>
+            <if test="goodsName!=null">
+                `goods_name`,
+            </if>
+            <if test="goodsQuantity!=null">
+                `goods_quantity`,
+            </if>
+            <if test="createTime!=null">
+                `create_time`,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="merchantId!=null">
+                #{merchantId},
+            </if>
+            <if test="orderNo!=null">
+                #{orderNo},
+            </if>
+            <if test="goodsName!=null">
+                #{goodsName},
+            </if>
+            <if test="goodsQuantity!=null">
+                #{goodsQuantity},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <select id="queryDetail" resultMap="OrderDetailMap">
+        select
+        <include refid="allResult"></include>
+        from  `order_detail`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="merchantId != null and merchantId!=''">
+                `merchant_id` = #{merchantId} and
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                `order_no` = #{orderNo} and
+            </if>
+        </trim>
+    </select>
+
+    <update id="update">
+      update
+      `order_detail`
+      <set>
+          <if test="goodsName != null">
+              `goods_name` = #{goodsName},
+          </if>
+          <if test="goodsQuantity != null">
+              `goods_quantity` = #{goodsQuantity},
+          </if>
+          `create_time` = now()
+      </set>
+        <where>
+            <if test="merchantId != null and merchantId!=''">
+                and `merchant_id` = #{merchantId}
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                and `order_no` = #{orderNo}
+            </if>
+        </where>
+    </update>
+</mapper>

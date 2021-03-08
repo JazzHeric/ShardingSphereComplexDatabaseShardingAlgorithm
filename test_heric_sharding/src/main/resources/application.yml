@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: test_sharding
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url_00: jdbc:mysql://127.0.0.1:3306/sharding_test_00?useSSL=false&allowMultiQueries=true
+    url_01: jdbc:mysql://127.0.0.1:3306/sharding_test_01?useSSL=false&allowMultiQueries=true
+    url_02: jdbc:mysql://127.0.0.1:3306/sharding_test_02?useSSL=false&allowMultiQueries=true
+    url_03: jdbc:mysql://127.0.0.1:3306/sharding_test_03?useSSL=false&allowMultiQueries=true
+    url_04: jdbc:mysql://127.0.0.1:3306/sharding_test_04?useSSL=false&allowMultiQueries=true
+    url_05: jdbc:mysql://127.0.0.1:3306/sharding_test_05?useSSL=false&allowMultiQueries=true
+    url_06: jdbc:mysql://127.0.0.1:3306/sharding_test_06?useSSL=false&allowMultiQueries=true
+    url_07: jdbc:mysql://127.0.0.1:3306/sharding_test_07?useSSL=false&allowMultiQueries=true
+    url_08: jdbc:mysql://127.0.0.1:3306/sharding_test_08?useSSL=false&allowMultiQueries=true
+    url_09: jdbc:mysql://127.0.0.1:3306/sharding_test_09?useSSL=false&allowMultiQueries=true
+    username: root
+    password: root
+    #连接配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    #alibaba druid Monitor
+    filters: stat,wall,log4j
+    logSlowSql: true
+    loginUsername: sqlMonitor
+    loginPassword: sqlMonitor
+
+# Actuator Web
+#management:
+#  server:
+#    port: 8085
+#  endpoint:
+#    shutdown:
+#      enabled: false
+#    health:
+#      show-details: always
+#  endpoints:
+#    jmx:
+#      exposure:
+#        include: *
+#    web:
+#      exposure:
+#        include: *
+
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+

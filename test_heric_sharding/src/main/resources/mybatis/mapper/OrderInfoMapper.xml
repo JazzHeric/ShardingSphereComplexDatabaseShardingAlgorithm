@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.sharding.mapper.OrderInfoMapper">
+
+    <resultMap type="com.test.sharding.entity.OrderInfo" id="OrderInfoMap">
+        <result property="id" column="id"/>
+        <result property="merchantId" column="merchant_id"/>
+        <result property="storeId" column="store_id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+            `id`,
+            `merchant_id`,
+            `store_id`,
+            `order_no`,
+            `pay_time`,
+            `finish_time`,
+            `create_time`,
+        </trim>
+    </sql>
+
+    <insert id="insert" >
+        INSERT INTO `order_info`
+        (
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                `id`,
+            </if>
+            <if test="merchantId!=null">
+                `merchant_id`,
+            </if>
+            <if test="storeId!=null">
+                `store_id`,
+            </if>
+            <if test="orderNo!=null">
+                `order_no`,
+            </if>
+            <if test="payTime!=null">
+                `pay_time`,
+            </if>
+            <if test="finishTime!=null">
+                `finish_time`,
+            </if>
+            <if test="createTime!=null">
+                `create_time`,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="id!=null">
+                #{id},
+            </if>
+            <if test="merchantId!=null">
+                #{merchantId},
+            </if>
+            <if test="storeId!=null">
+                #{storeId},
+            </if>
+            <if test="orderNo!=null">
+                #{orderNo},
+            </if>
+            <if test="payTime!=null">
+                #{payTime},
+            </if>
+            <if test="finishTime!=null">
+                #{finishTime},
+            </if>
+            <if test="createTime!=null">
+                #{createTime},
+            </if>
+        </trim>
+        )
+    </insert>
+
+    <select id="queryOrder" resultMap="OrderInfoMap">
+        select
+        <include refid="allResult"></include>
+        from  `order_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="merchantId != null and merchantId!=''">
+                `merchant_id` = #{merchantId} and
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                `order_no` = #{orderNo} and
+            </if>
+        </trim>
+    </select>
+
+    <update id="update">
+        update
+        `order_info`
+        <set>
+            <if test="payTime != null">
+                `pay_time` = #{payTime},
+            </if>
+            <if test="finishTime != null">
+                `finish_time` = #{finishTime},
+            </if>
+            `create_time` = now()
+        </set>
+        <where>
+            <if test="merchantId != null and merchantId!=''">
+                and `merchant_id` = #{merchantId}
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                and `order_no` = #{orderNo}
+            </if>
+        </where>
+
+    </update>
+</mapper>
