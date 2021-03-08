@@ -42,7 +42,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.0.RELEASE</version>
                 <configuration>
-                    <mainClass>com.weimob.saas.wlc.core.server.WlcCoreServerApplication</mainClass>
+                    <mainClass>com.test.sharding.TestApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
